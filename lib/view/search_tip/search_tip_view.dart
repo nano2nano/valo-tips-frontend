@@ -20,9 +20,7 @@ class SearchTipView extends StatefulHookWidget {
 class _SearchTipViewState extends State<SearchTipView> {
   late Future<List<Agent>> futureAgents;
   late Future<List<Stage>> futureStages;
-  Agent? selectedAgent;
-  Ability? selectedAbility;
-  Stage? selectedStage;
+
   final TextEditingController agentController = TextEditingController();
   final TextEditingController abilityController = TextEditingController();
   final TextEditingController stageController = TextEditingController();
@@ -45,6 +43,9 @@ class _SearchTipViewState extends State<SearchTipView> {
 
   @override
   Widget build(BuildContext context) {
+    final selectedAgent = useState<Agent?>(null);
+    final selectedAbility = useState<Ability?>(null);
+    final selectedStage = useState<Stage?>(null);
     return Scaffold(
       appBar: AppBar(
         title: const Text('ValoTips'),
@@ -64,11 +65,11 @@ class _SearchTipViewState extends State<SearchTipView> {
                       child: DropdownButton2(
                         isExpanded: true,
                         hint: () {
-                          if (selectedAgent == null) {
+                          if (selectedAgent.value == null) {
                             return const UnselectedDropdown(
                                 text: 'Select Agent');
                           } else {
-                            final agent = selectedAgent!;
+                            final agent = selectedAgent.value!;
                             return Row(
                               children: [
                                 Image.network(
@@ -122,8 +123,8 @@ class _SearchTipViewState extends State<SearchTipView> {
                             .toList(),
                         onChanged: (Agent? value) {
                           setState(() {
-                            selectedAgent = value;
-                            selectedAbility = null;
+                            selectedAgent.value = value;
+                            selectedAbility.value = null;
                           });
                         },
                         searchController: agentController,
@@ -166,16 +167,16 @@ class _SearchTipViewState extends State<SearchTipView> {
                       child: DropdownButton2(
                         isExpanded: true,
                         hint: () {
-                          if (selectedAgent == null) {
+                          if (selectedAgent.value == null) {
                             return const UnselectedDropdown(
                                 text: 'Select Agent');
-                          } else if (selectedAbility == null) {
+                          } else if (selectedAbility.value == null) {
                             return const UnselectedDropdown(
                                 text: 'Select Ability');
                           } else {
-                            assert(selectedAgent != null);
-                            assert(selectedAbility != null);
-                            final ability = selectedAbility!;
+                            assert(selectedAgent.value != null);
+                            assert(selectedAbility.value != null);
+                            final ability = selectedAbility.value!;
                             return Row(
                               children: [
                                 Container(
@@ -208,7 +209,7 @@ class _SearchTipViewState extends State<SearchTipView> {
                             );
                           }
                         }(),
-                        items: selectedAgent?.abilities
+                        items: selectedAgent.value?.abilities
                             .map((ability) => DropdownMenuItem(
                                   value: ability,
                                   child: Row(
@@ -247,7 +248,7 @@ class _SearchTipViewState extends State<SearchTipView> {
                             .toList(),
                         onChanged: (Ability? value) {
                           setState(() {
-                            selectedAbility = value;
+                            selectedAbility.value = value;
                           });
                         },
                         searchController: abilityController,
@@ -303,10 +304,10 @@ class _SearchTipViewState extends State<SearchTipView> {
                   child: DropdownButton2(
                     isExpanded: true,
                     hint: () {
-                      if (selectedStage == null) {
+                      if (selectedStage.value == null) {
                         return const UnselectedDropdown(text: 'Select a stage');
                       } else {
-                        final stage = selectedStage!;
+                        final stage = selectedStage.value!;
                         return Stack(
                           children: [
                             Image(image: NetworkImage(stage.listViewIcon)),
@@ -340,7 +341,7 @@ class _SearchTipViewState extends State<SearchTipView> {
                         .toList(),
                     onChanged: (Stage? value) {
                       setState(() {
-                        selectedStage = value;
+                        selectedStage.value = value;
                       });
                     },
                     searchController: stageController,
@@ -383,18 +384,18 @@ class _SearchTipViewState extends State<SearchTipView> {
           ),
           ElevatedButton(
             onPressed: () {
-              if (selectedAgent == null ||
-                  selectedAbility == null ||
-                  selectedStage == null) {
+              if (selectedAgent.value == null ||
+                  selectedAbility.value == null ||
+                  selectedStage.value == null) {
                 return;
               }
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => TipsView(
-                    agent: selectedAgent!,
-                    ability: selectedAbility!,
-                    stage: selectedStage!,
+                    agent: selectedAgent.value!,
+                    ability: selectedAbility.value!,
+                    stage: selectedStage.value!,
                   ),
                 ),
               );

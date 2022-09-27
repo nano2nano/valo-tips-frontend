@@ -22,9 +22,7 @@ class PostTipView extends StatefulHookWidget {
 class _PostTipViewState extends State<PostTipView> {
   late Future<List<Agent>> futureAgents;
   late Future<List<Stage>> futureStages;
-  Agent? selectedAgent;
-  Ability? selectedAbility;
-  Stage? selectedStage;
+
   final TextEditingController agentController = TextEditingController();
   final TextEditingController abilityController = TextEditingController();
   final TextEditingController stageController = TextEditingController();
@@ -49,6 +47,9 @@ class _PostTipViewState extends State<PostTipView> {
   Widget build(BuildContext context) {
     final standImg = useState<List<int>?>(null);
     final aimImg = useState<List<int>?>(null);
+    final selectedAgent = useState<Agent?>(null);
+    final selectedAbility = useState<Ability?>(null);
+    final selectedStage = useState<Stage?>(null);
     return Scaffold(
       appBar: AppBar(
         title: const Text('ValoTips/PostTip'),
@@ -81,11 +82,11 @@ class _PostTipViewState extends State<PostTipView> {
                       child: DropdownButton2(
                         isExpanded: true,
                         hint: () {
-                          if (selectedAgent == null) {
+                          if (selectedAgent.value == null) {
                             return const UnselectedDropdown(
                                 text: 'Select Agent');
                           } else {
-                            final agent = selectedAgent!;
+                            final agent = selectedAgent.value!;
                             return Row(
                               children: [
                                 Image.network(
@@ -139,8 +140,8 @@ class _PostTipViewState extends State<PostTipView> {
                             .toList(),
                         onChanged: (Agent? value) {
                           setState(() {
-                            selectedAgent = value;
-                            selectedAbility = null;
+                            selectedAgent.value = value;
+                            selectedAbility.value = null;
                           });
                         },
                         searchController: agentController,
@@ -183,16 +184,16 @@ class _PostTipViewState extends State<PostTipView> {
                       child: DropdownButton2(
                         isExpanded: true,
                         hint: () {
-                          if (selectedAgent == null) {
+                          if (selectedAgent.value == null) {
                             return const UnselectedDropdown(
                                 text: 'Select Agent');
-                          } else if (selectedAbility == null) {
+                          } else if (selectedAbility.value == null) {
                             return const UnselectedDropdown(
                                 text: 'Select Ability');
                           } else {
-                            assert(selectedAgent != null);
-                            assert(selectedAbility != null);
-                            final ability = selectedAbility!;
+                            assert(selectedAgent.value != null);
+                            assert(selectedAbility.value != null);
+                            final ability = selectedAbility.value!;
                             return Row(
                               children: [
                                 Container(
@@ -225,7 +226,7 @@ class _PostTipViewState extends State<PostTipView> {
                             );
                           }
                         }(),
-                        items: selectedAgent?.abilities
+                        items: selectedAgent.value?.abilities
                             .map((ability) => DropdownMenuItem(
                                   value: ability,
                                   child: Row(
@@ -264,7 +265,7 @@ class _PostTipViewState extends State<PostTipView> {
                             .toList(),
                         onChanged: (Ability? value) {
                           setState(() {
-                            selectedAbility = value;
+                            selectedAbility.value = value;
                           });
                         },
                         searchController: abilityController,
@@ -320,10 +321,10 @@ class _PostTipViewState extends State<PostTipView> {
                   child: DropdownButton2(
                     isExpanded: true,
                     hint: () {
-                      if (selectedStage == null) {
+                      if (selectedStage.value == null) {
                         return const UnselectedDropdown(text: 'Select a stage');
                       } else {
-                        final stage = selectedStage!;
+                        final stage = selectedStage.value!;
                         return Stack(
                           children: [
                             Image(image: NetworkImage(stage.listViewIcon)),
@@ -357,7 +358,7 @@ class _PostTipViewState extends State<PostTipView> {
                         .toList(),
                     onChanged: (Stage? value) {
                       setState(() {
-                        selectedStage = value;
+                        selectedStage.value = value;
                       });
                     },
                     searchController: stageController,
@@ -400,9 +401,9 @@ class _PostTipViewState extends State<PostTipView> {
           ),
           ElevatedButton(
             onPressed: () async {
-              if (selectedAgent == null ||
-                  selectedAbility == null ||
-                  selectedStage == null ||
+              if (selectedAgent.value == null ||
+                  selectedAbility.value == null ||
+                  selectedStage.value == null ||
                   standImg.value == null ||
                   aimImg.value == null) {
                 return;
@@ -411,9 +412,9 @@ class _PostTipViewState extends State<PostTipView> {
               await postTips(
                 standImageBytes: standImg.value!,
                 aimImageBytes: aimImg.value!,
-                agentUuid: selectedAgent!.uuid,
-                abilitySlot: selectedAbility!.slot,
-                mapUuid: selectedStage!.uuid,
+                agentUuid: selectedAgent.value!.uuid,
+                abilitySlot: selectedAbility.value!.slot,
+                mapUuid: selectedStage.value!.uuid,
                 title: 'default title',
                 description: 'default description',
                 sideId: 1,
