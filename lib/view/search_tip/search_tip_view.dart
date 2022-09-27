@@ -2,6 +2,7 @@ import 'dart:convert' as convert;
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:http/http.dart' as http;
 import 'package:valo_tips/model/ability/ability.dart';
 import 'package:valo_tips/model/agent/agent.dart';
@@ -9,7 +10,7 @@ import 'package:valo_tips/model/stage/stage.dart';
 import 'package:valo_tips/view/drawer/drawer.dart';
 import 'package:valo_tips/view/show_tips/show_tips_view.dart';
 
-class SearchTipView extends StatefulWidget {
+class SearchTipView extends StatefulHookWidget {
   const SearchTipView({super.key});
 
   @override
