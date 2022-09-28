@@ -46,6 +46,12 @@ class _PostTipViewState extends State<PostTipView> {
     final agentSnapshot = useFuture(futureAgents);
     final stageSnapshot = useFuture(futureStages);
 
+    final canPushButton = (selectedAgent.value != null &&
+        selectedAbility.value != null &&
+        selectedStage.value != null &&
+        standImg.value != null &&
+        aimImg.value != null);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('ValoTips/PostTip'),
@@ -386,19 +392,8 @@ class _PostTipViewState extends State<PostTipView> {
                       child: CircularProgressIndicator(),
                     ),
           ElevatedButton(
-            onPressed: (selectedAgent.value != null &&
-                    selectedAbility.value != null &&
-                    selectedStage.value != null &&
-                    standImg.value != null &&
-                    aimImg.value != null)
+            onPressed: canPushButton
                 ? () async {
-                    if (selectedAgent.value == null ||
-                        selectedAbility.value == null ||
-                        selectedStage.value == null ||
-                        standImg.value == null ||
-                        aimImg.value == null) {
-                      return;
-                    }
                     // post to api
                     await postTips(
                       standImageBytes: standImg.value!,

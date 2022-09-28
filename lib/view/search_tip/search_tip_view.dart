@@ -42,6 +42,10 @@ class _SearchTipViewState extends State<SearchTipView> {
     final agentSnapshot = useFuture(futureAgents);
     final stageSnapshot = useFuture(futureStages);
 
+    final canPushButton = (selectedAgent.value != null &&
+        selectedAbility.value != null &&
+        selectedStage.value != null);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('ValoTips'),
@@ -365,15 +369,8 @@ class _SearchTipViewState extends State<SearchTipView> {
                   ? Text(stageSnapshot.error.toString())
                   : const CircularProgressIndicator(),
           ElevatedButton(
-            onPressed: (selectedAgent.value != null &&
-                    selectedAbility.value != null &&
-                    selectedStage.value != null)
+            onPressed: canPushButton
                 ? () {
-                    if (selectedAgent.value == null ||
-                        selectedAbility.value == null ||
-                        selectedStage.value == null) {
-                      return;
-                    }
                     Navigator.push(
                       context,
                       MaterialPageRoute(
