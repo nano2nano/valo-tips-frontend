@@ -38,6 +38,10 @@ class _SearchTipViewState extends State<SearchTipView> {
     final selectedAgent = useState<Agent?>(null);
     final selectedAbility = useState<Ability?>(null);
     final selectedStage = useState<Stage?>(null);
+
+    final agentSnapshot = useFuture(futureAgents);
+    final stageSnapshot = useFuture(futureStages);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('ValoTips'),
@@ -45,12 +49,8 @@ class _SearchTipViewState extends State<SearchTipView> {
       drawer: const MyDrawer(),
       body: Center(
         child: Column(children: [
-          FutureBuilder<List<Agent>>(
-            future: futureAgents,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                final agents = snapshot.data!;
-                return Column(
+          agentSnapshot.hasData
+              ? Column(
                   children: [
                     const Text('Agent', style: TextStyle(fontSize: 24)),
                     DropdownButtonHideUnderline(
@@ -86,7 +86,7 @@ class _SearchTipViewState extends State<SearchTipView> {
                             );
                           }
                         }(),
-                        items: agents
+                        items: agentSnapshot.data!
                             .map((agent) => DropdownMenuItem(
                                   value: agent,
                                   child: Row(
@@ -276,23 +276,16 @@ class _SearchTipViewState extends State<SearchTipView> {
                       ),
                     ),
                   ],
-                );
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
-              return const CircularProgressIndicator();
-            },
-          ),
+                )
+              : agentSnapshot.hasError
+                  ? Text(agentSnapshot.error.toString())
+                  : const CircularProgressIndicator(),
           const SizedBox(
             height: 16,
           ),
           const Text('Stage', style: TextStyle(fontSize: 24)),
-          FutureBuilder<List<Stage>>(
-            future: futureStages,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                final stages = snapshot.data!;
-                return DropdownButtonHideUnderline(
+          stageSnapshot.hasData
+              ? DropdownButtonHideUnderline(
                   child: DropdownButton2(
                     isExpanded: true,
                     hint: () {
@@ -313,7 +306,7 @@ class _SearchTipViewState extends State<SearchTipView> {
                         );
                       }
                     }(),
-                    items: stages
+                    items: stageSnapshot.data!
                         .map((stage) => DropdownMenuItem(
                               value: stage,
                               child: Stack(
@@ -367,13 +360,10 @@ class _SearchTipViewState extends State<SearchTipView> {
                           .contains(searchValue));
                     },
                   ),
-                );
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
-              return const CircularProgressIndicator();
-            },
-          ),
+                )
+              : stageSnapshot.hasError
+                  ? Text(stageSnapshot.error.toString())
+                  : const CircularProgressIndicator(),
           ElevatedButton(
             onPressed: () {
               if (selectedAgent.value == null ||
