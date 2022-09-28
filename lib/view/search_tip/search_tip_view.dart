@@ -21,10 +21,6 @@ class _SearchTipViewState extends State<SearchTipView> {
   late Future<List<Agent>> futureAgents;
   late Future<List<Stage>> futureStages;
 
-  final TextEditingController agentController = TextEditingController();
-  final TextEditingController abilityController = TextEditingController();
-  final TextEditingController stageController = TextEditingController();
-
   final language = 'ja-JP';
   @override
   void initState() {
@@ -34,15 +30,11 @@ class _SearchTipViewState extends State<SearchTipView> {
   }
 
   @override
-  void dispose() {
-    agentController.dispose();
-    abilityController.dispose();
-    stageController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final TextEditingController agentController = useTextEditingController();
+    final TextEditingController abilityController = useTextEditingController();
+    final TextEditingController stageController = useTextEditingController();
+
     final selectedAgent = useState<Agent?>(null);
     final selectedAbility = useState<Ability?>(null);
     final selectedStage = useState<Stage?>(null);

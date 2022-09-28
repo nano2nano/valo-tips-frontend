@@ -23,10 +23,6 @@ class _PostTipViewState extends State<PostTipView> {
   late Future<List<Agent>> futureAgents;
   late Future<List<Stage>> futureStages;
 
-  final TextEditingController agentController = TextEditingController();
-  final TextEditingController abilityController = TextEditingController();
-  final TextEditingController stageController = TextEditingController();
-
   final language = 'ja-JP';
   @override
   void initState() {
@@ -36,15 +32,11 @@ class _PostTipViewState extends State<PostTipView> {
   }
 
   @override
-  void dispose() {
-    agentController.dispose();
-    abilityController.dispose();
-    stageController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final TextEditingController agentController = useTextEditingController();
+    final TextEditingController abilityController = useTextEditingController();
+    final TextEditingController stageController = useTextEditingController();
+
     final standImg = useState<List<int>?>(null);
     final aimImg = useState<List<int>?>(null);
     final selectedAgent = useState<Agent?>(null);
