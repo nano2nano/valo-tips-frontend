@@ -386,29 +386,35 @@ class _PostTipViewState extends State<PostTipView> {
                       child: CircularProgressIndicator(),
                     ),
           ElevatedButton(
-            onPressed: () async {
-              if (selectedAgent.value == null ||
-                  selectedAbility.value == null ||
-                  selectedStage.value == null ||
-                  standImg.value == null ||
-                  aimImg.value == null) {
-                return;
-              }
-              // post to api
-              await postTips(
-                standImageBytes: standImg.value!,
-                aimImageBytes: aimImg.value!,
-                agentUuid: selectedAgent.value!.uuid,
-                abilitySlot: selectedAbility.value!.slot,
-                mapUuid: selectedStage.value!.uuid,
-                title: 'default title',
-                description: 'default description',
-                sideId: 1,
-              ).then((value) {
-                // navigate to show page
-                Navigator.of(context).pushNamed('/tips');
-              });
-            },
+            onPressed: (selectedAgent.value != null &&
+                    selectedAbility.value != null &&
+                    selectedStage.value != null &&
+                    standImg.value != null &&
+                    aimImg.value != null)
+                ? () async {
+                    if (selectedAgent.value == null ||
+                        selectedAbility.value == null ||
+                        selectedStage.value == null ||
+                        standImg.value == null ||
+                        aimImg.value == null) {
+                      return;
+                    }
+                    // post to api
+                    await postTips(
+                      standImageBytes: standImg.value!,
+                      aimImageBytes: aimImg.value!,
+                      agentUuid: selectedAgent.value!.uuid,
+                      abilitySlot: selectedAbility.value!.slot,
+                      mapUuid: selectedStage.value!.uuid,
+                      title: 'default title',
+                      description: 'default description',
+                      sideId: 1,
+                    ).then((value) {
+                      // navigate to show page
+                      Navigator.of(context).pushNamed('/tips');
+                    });
+                  }
+                : null,
             style: ElevatedButton.styleFrom(minimumSize: const Size(88, 50)),
             child: const Text(
               '投稿',

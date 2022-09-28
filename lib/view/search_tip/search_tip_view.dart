@@ -365,23 +365,27 @@ class _SearchTipViewState extends State<SearchTipView> {
                   ? Text(stageSnapshot.error.toString())
                   : const CircularProgressIndicator(),
           ElevatedButton(
-            onPressed: () {
-              if (selectedAgent.value == null ||
-                  selectedAbility.value == null ||
-                  selectedStage.value == null) {
-                return;
-              }
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => TipsView(
-                    agent: selectedAgent.value!,
-                    ability: selectedAbility.value!,
-                    stage: selectedStage.value!,
-                  ),
-                ),
-              );
-            },
+            onPressed: (selectedAgent.value != null &&
+                    selectedAbility.value != null &&
+                    selectedStage.value != null)
+                ? () {
+                    if (selectedAgent.value == null ||
+                        selectedAbility.value == null ||
+                        selectedStage.value == null) {
+                      return;
+                    }
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TipsView(
+                          agent: selectedAgent.value!,
+                          ability: selectedAbility.value!,
+                          stage: selectedStage.value!,
+                        ),
+                      ),
+                    );
+                  }
+                : null,
             style: ElevatedButton.styleFrom(minimumSize: const Size(88, 50)),
             child: const Text(
               '検索',
