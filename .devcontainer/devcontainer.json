@@ -3,6 +3,7 @@
 	"forwardPorts": [
 		3000
 	],
+	"postCreateCommand": "flutter pub get",
 	"customizations": {
 		"vscode": {
 			"extensions": [
