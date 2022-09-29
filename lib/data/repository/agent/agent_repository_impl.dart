@@ -10,8 +10,8 @@ final agentRepositoryProvider =
     Provider<AgentRepository>((ref) => AgentRepositoryImpl(ref.read));
 
 class AgentRepositoryImpl implements AgentRepository {
-  AgentRepositoryImpl(this._reader);
-  final Reader _reader;
+  AgentRepositoryImpl(this.reader);
+  final Reader reader;
 
   @override
   Future<List<Agent>> fetchAgents({required String language}) async {

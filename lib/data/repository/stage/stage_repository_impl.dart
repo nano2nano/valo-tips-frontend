@@ -10,8 +10,8 @@ final stageRepositoryProvider =
     Provider<StageRepository>((ref) => StageRepositoryImpl(ref.read));
 
 class StageRepositoryImpl implements StageRepository {
-  StageRepositoryImpl(this._reader);
-  final Reader _reader;
+  StageRepositoryImpl(this.reader);
+  final Reader reader;
 
   @override
   Future<List<Stage>> fetchStages({required String language}) async {
